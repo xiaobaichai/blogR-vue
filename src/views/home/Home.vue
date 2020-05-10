@@ -33,6 +33,7 @@
         <item-info />
       </div>
       <div class="content-r">
+        <!-- 热门板块 -->
         <div class="hot">
           <p>热门板块</p>
           <div class="hot-item">
@@ -45,6 +46,20 @@
             </a>
           </div>
         </div>
+        <!-- 热门标签 -->
+        <div class="tags">
+          <p>热门标签</p>
+          <ul>
+            <li>分析</li>
+            <li>源</li>
+            <li>源码分析</li>
+            <li>码分析</li>
+            <li>源码</li>
+            <li>源码分析</li>
+            <li>源码分</li>
+          </ul>
+        </div>
+        <!-- 最新留言 -->
         <div class="msg">
           <p>最新留言</p>
           <div class="msg-item">
@@ -58,6 +73,19 @@
               </div>
             </div>
           </div>
+        </div>
+        <!-- 博客推荐 -->
+        <div class="blog">
+          <p>友链推荐</p>
+          <ul>
+            <li>blog</li>
+            <li>博客</li>
+            <li>博客博客</li>
+            <li>博客析</li>
+            <li>源博客码</li>
+            <li>源码分博客析</li>
+            <li>博客分</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -88,6 +116,7 @@ export default {
 .home-content {
   width: 1200px;
   margin: 0 auto;
+  //轮播图板块
   .carousel {
     margin-top: 110px;
     margin-bottom: 30px;
@@ -171,6 +200,7 @@ export default {
     .content-r {
       width: 400px;
       padding-left: 20px;
+      //热门板块
       .hot {
         margin-bottom: 40px;
         p {
@@ -200,6 +230,36 @@ export default {
           }
         }
       }
+      //人们标签
+      .tags {
+        margin-bottom: 27px;
+        p {
+          font-size: 19px;
+          font-weight: 600;
+          margin-bottom: 27px;
+          color: rgb(78, 61, 235);
+        }
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          li {
+            padding: 10px 22px;
+            margin: 0 15px 15px 0;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            text-align: center;
+            font-size: 13px;
+            color: rgb(102, 105, 105);
+            background-color: #fafafa;
+          }
+          li:hover {
+            border-color: #00a8ff;
+            color: #00a8ff;
+            cursor: pointer;
+          }
+        }
+      }
+      // 最近留言
       .msg {
         p {
           font-size: 19px;
@@ -238,6 +298,34 @@ export default {
                 color: rgb(36, 139, 207);
               }
             }
+          }
+        }
+      }
+      // 友链推荐
+      .blog {
+        margin-bottom: 27px;
+        p {
+          font-size: 19px;
+          font-weight: 600;
+          margin-bottom: 27px;
+          color: rgb(78, 61, 235);
+        }
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          li {
+            padding: 10px 22px;
+            margin: 0 14px 10px 0;
+            border-radius: 6px;
+            border: 1px solid #eeeeee;
+            box-shadow: 0 0 3px #eee;
+            font-size: 12px;
+            font-weight: 700;
+          }
+          li:hover {
+            color: #00a8ff;
+            cursor: pointer;
+            background-color: #fafafa;
           }
         }
       }

@@ -35,8 +35,8 @@ export default {
   z-index: 99;
   width: 100%;
   height: 80px;
-  //background-color: rgb(218, 39, 39);
-  box-shadow: 0 4px 8px 0 rgba(228, 226, 226, 0.89);
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(7, 17, 27, 0.1);
   margin-bottom: 30px;
   .nav-center {
     width: 1200px;

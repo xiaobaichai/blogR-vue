@@ -10,6 +10,9 @@ const Recommend = () => import("@/views/recommend/Recommend.vue");
 const Message = () => import("@/views/message/Message.vue");
 const User = () => import("@/views/user/User.vue");
 const Dashboard = () => import("@/views/dashboard/Dashboard.vue");
+const ArtiPage = () => import("@/views/article/ArtiPage.vue");
+
+const Editor = () => import("@/components/commen/Editor");
 
 const routes = [
   { path: "/", redirect: "/dashboard" },
@@ -25,6 +28,16 @@ const routes = [
       { path: "message", name: "message", component: Message },
       { path: "user", name: "user", component: User },
     ],
+  },
+  {
+    path: "/editor",
+    name: "editor",
+    component: Editor,
+  },
+  {
+    path: "/article",
+    name: "artiPage",
+    component: ArtiPage,
   },
 ];
 

@@ -1,22 +1,24 @@
 <template>
   <div class="item-info clearfix">
-    <div class="item-l fl">
-      <div class="row-type">
-        <span class="type-icon"></span>
-        <span class="type-content">Vue</span>
+    <router-link to="/article" tag="a" target="_blank">
+      <div class="item-l fl">
+        <div class="row-type">
+          <span class="type-icon"></span>
+          <span class="type-content">Vue</span>
+        </div>
+        <div class="row-title">自己动手丰衣足食</div>
+        <div
+          class="row-brief"
+        >估计很多人像我一样，都是十七、八岁读过《挪威的森林》，书中围绕着性的描写让人既紧张又慌乱，可还是忍不住往下阅读，直到结束为止。而萦绕于脑海的疑问，比如，木月为什么自杀？直子为什么自杀？渡边君为什么和玲子做四次爱等等，始终没有答案。书中围绕着性的描写让人既紧张又慌乱，可还是忍不住往</div>
+        <div class="row-info">
+          <span class="info-time">3天前</span>
+          <span class="info-view">浏览54</span>
+        </div>
       </div>
-      <div class="row-title">自己动手丰衣足食</div>
-      <div
-        class="row-brief"
-      >估计很多人像我一样，都是十七、八岁读过《挪威的森林》，书中围绕着性的描写让人既紧张又慌乱，可还是忍不住往下阅读，直到结束为止。而萦绕于脑海的疑问，比如，木月为什么自杀？直子为什么自杀？渡边君为什么和玲子做四次爱等等，始终没有答案。书中围绕着性的描写让人既紧张又慌乱，可还是忍不住往</div>
-      <div class="row-info">
-        <span class="info-time">3天前</span>
-        <span class="info-view">浏览54</span>
+      <div class="item-r fr">
+        <img src="../../assets/img/home/vue.jpg" alt width="132" height="132" />
       </div>
-    </div>
-    <div class="item-r fr">
-      <img src="../../assets/img/home/vue.jpg" alt width="132" height="132" />
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -28,6 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 .item-info {
+  // display: block;
   margin-bottom: 15px;
   box-sizing: border-box;
   width: 790px;
