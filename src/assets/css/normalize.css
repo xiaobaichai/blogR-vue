@@ -113,6 +113,7 @@ a:focus,
 a:hover,
 a:visited {
   text-decoration: none;
+  color: #333;
 }
 input[type="password"],
 input[type="text"],

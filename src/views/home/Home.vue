@@ -12,9 +12,14 @@
       <div class="carousel-r">
         <div class="search">
           <div class="search-tag">
-            <span>热门标签</span>
-            <a>小程序</a>
-            <a>面试</a>
+            <!-- <span>热门标签</span> -->
+            <router-link
+              v-for="item in tags"
+              tag="a"
+              :to="'/search/'+item"
+              target="_blank"
+              :key="item"
+            >{{item}}</router-link>
           </div>
           <div class="search-input">
             <i class="el-icon-search"></i>
@@ -30,18 +35,18 @@
     <div class="content">
       <div class="content-l">
         <p>#最新内容</p>
-        <item-info />
+        <item-article :articles="articles"></item-article>
       </div>
       <div class="content-r">
         <!-- 热门板块 -->
         <div class="hot">
           <p>热门板块</p>
-          <div class="hot-item">
+          <div class="hot-item" v-for="item in hotArticles" :key="item.time">
             <a>
-              <div class="title">山河远阔，人间烟火，无一是你，无一不是你。</div>
+              <div class="title">{{item.a_title}}</div>
               <div class="info">
-                <span class="time">3 个月内</span>
-                <span class="view">浏览 23</span>
+                <span class="time">{{item.a_time | getDate}}</span>
+                <span class="view">{{"浏览" + item.a_views}}</span>
               </div>
             </a>
           </div>
@@ -49,15 +54,15 @@
         <!-- 热门标签 -->
         <div class="tags">
           <p>热门标签</p>
-          <ul>
-            <li>分析</li>
-            <li>源</li>
-            <li>源码分析</li>
-            <li>码分析</li>
-            <li>源码</li>
-            <li>源码分析</li>
-            <li>源码分</li>
-          </ul>
+          <div class="tag_item">
+            <router-link
+              v-for="item in tags"
+              tag="a"
+              :to="'/search/'+item"
+              target="_blank"
+              :key="item"
+            >{{item}}</router-link>
+          </div>
         </div>
         <!-- 最新留言 -->
         <div class="msg">
@@ -93,12 +98,19 @@
 </template>
 
 <script>
-import ItemInfo from "@/components/content/ItemInfo.vue";
+//引入组件
+import ItemArticle from "@/components/content/ItemArticle.vue";
+
+//引入首页接口
+import { getHomeLately, getHomeHot, getHomeTags } from "@/service/index.js";
 
 export default {
   name: "",
   data() {
     return {
+      articles: [],
+      hotArticles: [],
+      tags: [],
       carousel: [
         { id: 0, src: require("../../assets/img/carousel1.jpg") },
         { id: 1, src: require("../../assets/img/carousel2.jpg") },
@@ -107,7 +119,37 @@ export default {
     };
   },
   components: {
-    ItemInfo
+    ItemArticle
+  },
+  methods: {
+    reqDate() {
+      getHomeLately() //获取首页最新内容lately
+        .then(response => {
+          this.articles = response.data;
+          console.log(response);
+        })
+        .catch(err => {
+          throw err;
+        });
+      getHomeHot() //获取首页热门内容hot
+        .then(response => {
+          this.hotArticles = response.data;
+        })
+        .catch(err => {
+          throw err;
+        });
+      getHomeTags() //获取首页标签tags
+        .then(response => {
+          this.tags = response.data;
+        })
+        .catch(err => {
+          throw err;
+        });
+      console.log("发送请求");
+    }
+  },
+  created() {
+    this.reqDate();
   }
 };
 </script>
@@ -140,16 +182,18 @@ export default {
         padding-top: 12px;
         .search-tag {
           margin-bottom: 12px;
-          span {
-            margin: 0 10px 0 20px;
-            font-size: 16px;
-            font-weight: 600;
-            color: rgb(125, 94, 240);
-          }
+          padding-left: 30px;
+          // span {
+          //   margin: 0 10px 0 20px;
+          //   font-size: 16px;
+          //   font-weight: 600;
+          //   color: rgb(125, 94, 240);
+          // }
           a {
             margin-right: 9px;
-            font-size: 14px;
+            font-size: 12px;
             color: #999999;
+            cursor: pointer;
           }
         }
         .search-input {
@@ -207,11 +251,12 @@ export default {
           font-size: 19px;
           font-weight: 600;
           margin-bottom: 27px;
-          color: rgb(78, 61, 235);
+          // color: rgb(78, 61, 235);
         }
         .hot-item {
           width: 380px;
           border-bottom: 1px solid #eeeeee;
+          margin-bottom: 20px;
           a {
             display: block;
             .title {
@@ -230,19 +275,20 @@ export default {
           }
         }
       }
-      //人们标签
+      //热门标签
       .tags {
         margin-bottom: 27px;
         p {
           font-size: 19px;
           font-weight: 600;
           margin-bottom: 27px;
-          color: rgb(78, 61, 235);
+          // color: rgb(78, 61, 235);
         }
-        ul {
+        .tag_item {
           display: flex;
           flex-wrap: wrap;
-          li {
+          a {
+            display: block;
             padding: 10px 22px;
             margin: 0 15px 15px 0;
             border-radius: 10px;
@@ -252,7 +298,7 @@ export default {
             color: rgb(102, 105, 105);
             background-color: #fafafa;
           }
-          li:hover {
+          a:hover {
             border-color: #00a8ff;
             color: #00a8ff;
             cursor: pointer;
@@ -265,7 +311,7 @@ export default {
           font-size: 19px;
           font-weight: 600;
           margin-bottom: 27px;
-          color: rgb(78, 61, 235);
+          // color: rgb(78, 61, 235);
         }
         .msg-item {
           margin-bottom: 22px;
@@ -308,7 +354,7 @@ export default {
           font-size: 19px;
           font-weight: 600;
           margin-bottom: 27px;
-          color: rgb(78, 61, 235);
+          // color: rgb(78, 61, 235);
         }
         ul {
           display: flex;

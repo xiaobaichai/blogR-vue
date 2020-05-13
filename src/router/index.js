@@ -11,11 +11,13 @@ const Message = () => import("@/views/message/Message.vue");
 const User = () => import("@/views/user/User.vue");
 const Dashboard = () => import("@/views/dashboard/Dashboard.vue");
 const ArtiPage = () => import("@/views/article/ArtiPage.vue");
+const ArtiTagSearch = () => import("@/views/artiTagSearch/ArtiTagSearch.vue");
 
 const Editor = () => import("@/components/commen/Editor");
 
 const routes = [
   { path: "/", redirect: "/dashboard" },
+  //导航部分
   {
     path: "/dashboard",
     name: "dashboard",
@@ -29,15 +31,23 @@ const routes = [
       { path: "user", name: "user", component: User },
     ],
   },
+  //文章编辑页面
   {
     path: "/editor",
     name: "editor",
     component: Editor,
   },
+  //文章详情页面
   {
-    path: "/article",
+    path: "/article/:id",
     name: "artiPage",
     component: ArtiPage,
+  },
+  //标签搜索/文章详情页面
+  {
+    path: "/search/:tag",
+    name: "artiTagSearch",
+    component: ArtiTagSearch,
   },
 ];
 
