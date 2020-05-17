@@ -12,17 +12,12 @@ export const getHomeHot = () => ajax(BASE_URL + "/api/home/hot");
 export const getHomeTags = () => ajax(BASE_URL + "/api/home/tags");
 
 //技术分类接口=============================================================
-export const getCategoryData = () => ajax(BASE_URL + "/api/category");
-export const getCategoryCss = () => ajax(BASE_URL + "/api/category/css");
-export const getCategoryJavascript = () => ajax(BASE_URL + "/api/category/javascript");
-export const getCategoryNode = () => ajax(BASE_URL + "/api/category/node");
-export const getCategoryVue = () => ajax(BASE_URL + "/api/category/vue");
-export const getCategoryOther = () => ajax(BASE_URL + "/api/category/other");
-//分页请求
+export const getCategoryData = (type, page) => ajax(BASE_URL + "/api/category", { type, page });
 
 //留言板接口==============================================================
-export const getMsgData = () => ajax(BASE_URL + "/api/msg");
-export const leaveMessage = (nickName, msg) => ajax(BASE_URL + "/api/leaveMsg", { nickName, msg }, "POST"); //POST
+export const getMsg = (count) => ajax(BASE_URL + "/api/getMsg", { count });
+export const leaveMessage = (nickname, email, content) => ajax(BASE_URL + "/api/leaveMsg", { nickname, email, content }, "POST"); //POST
+export const resMsg = (id, res) => ajax(BASE_URL + "/api/resMsg", { id, res }, "POST");
 
 //资源推荐接口============================================================
 export const getRecommendData = () => ajax(BASE_URL + "/api/recommend");
@@ -30,3 +25,7 @@ export const getRecommendData = () => ajax(BASE_URL + "/api/recommend");
 
 //博文详情页==============================================================
 export const getArticle = (id) => ajax(BASE_URL + "/api/article", { id });
+
+//搜索页面================================================================
+export const getSearchTag = (tag) => ajax(BASE_URL + "/api/searchTag", { tag });
+export const getSearchKeyword = (keyword) => ajax(BASE_URL + "/api/searchKeyword", { keyword });

@@ -5,25 +5,27 @@
         <p>留言</p>
         <el-row class="user_info" :gutter="20">
           <el-col :span="12">
-            <el-input placeholder="昵称"></el-input>
+            <el-input placeholder="昵称" v-model="nickname"></el-input>
           </el-col>
           <el-col :span="12">
-            <el-input placeholder="邮箱"></el-input>
+            <el-input placeholder="邮箱" v-model="email"></el-input>
           </el-col>
         </el-row>
-        <el-input class="user_msg" placeholder="留言内容" type="textarea" :rows="6"></el-input>
-        <el-button class="msg_button" type="primary" style="width:100%">提交留言</el-button>
+        <el-input class="user_msg" placeholder="留言内容" type="textarea" :rows="6" v-model="content"></el-input>
+        <el-button class="msg_button" type="primary" style="width:100%" @click="submit">提交留言</el-button>
       </div>
       <div class="new_msg">
         <p>最新留言</p>
-        <div class="msg-item">
-          <div class="msg-time">2020/04/29 21:59:35</div>
+        <div class="msg-item" v-for="item in msgs" :key="item.m_time">
+          <div class="msg-time">{{item.m_rTime}}</div>
           <div class="msg-content">
             <div class="user-content">
-              <span>冉迪：</span>申请友链，已添加贵站 站点：http://www.zihanzy.com 名称：唐子涵的个人博客
+              <span class="nickname">{{item.m_nickname+': '}}</span>
+              <span class="msg">{{item.m_content}}</span>
             </div>
             <div class="admin-content">
-              <span>管理员：</span>已添加了，昨天忙及时回复，请重新添加本站友链，欢迎多来窜窜~
+              <span class="admin">管理员：</span>
+              <span class="admin-content">{{item.m_response}}</span>
             </div>
           </div>
         </div>
@@ -53,8 +55,43 @@
 </template>
 
 <script>
+//引入接口
+import { leaveMessage, getMsg } from "@/service/index.js";
+
 export default {
-  name: ""
+  name: "message",
+  data() {
+    return {
+      nickname: "",
+      email: "",
+      content: "",
+      msgs: []
+    };
+  },
+  methods: {
+    submit() {
+      leaveMessage(this.nickname, this.email, this.content)
+        .then(response => {
+          console.log(response);
+          //清空留言
+          this.nickname = "";
+          this.email = "";
+          this.content = "";
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
+    reqData() {
+      getMsg(6).then(response => {
+        console.log(response);
+        this.msgs = response.data;
+      });
+    }
+  },
+  created() {
+    this.reqData();
+  }
 };
 </script>
 
@@ -110,16 +147,28 @@ export default {
           .user-content {
             font-size: 14px;
             margin-bottom: 12px;
-            span {
+            .nickname {
               font-weight: 600;
               color: rgb(36, 139, 207);
+            }
+            .msg {
+              word-break: normal;
+              // display: block;
+              white-space: pre-wrap;
+              word-wrap: break-word;
             }
           }
           .admin-content {
             font-size: 14px;
-            span {
+            .admin {
               font-weight: 600;
               color: rgb(36, 139, 207);
+            }
+            .admin-content {
+              word-break: normal;
+              // display: block;
+              white-space: pre-wrap;
+              word-wrap: break-word;
             }
           }
         }

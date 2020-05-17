@@ -71,8 +71,12 @@ export default {
     reqData() {
       getArticle(this.$route.params.id)
         .then(response => {
-          this.article = response.data;
-          console.log(response);
+          if (response.code == 1) {
+            window.location = "http://localhost:3000/404.html";
+          } else {
+            this.article = response.data;
+            console.log(response);
+          }
         })
         .catch(err => {
           throw err;
@@ -104,7 +108,7 @@ export default {
 .article {
   display: flex;
   justify-content: space-between;
-  margin: 110px auto 0;
+  margin: 110px auto 40px;
   width: 1200px;
   .article_l {
     width: 800px;

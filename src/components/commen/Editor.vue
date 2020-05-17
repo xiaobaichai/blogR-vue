@@ -10,7 +10,7 @@
     </div>
     <div class="edit_tags">
       标签：
-      <el-input v-model="tempTag" placeholder="回车或点击空白处添加标签，点击标签删除标签" @change="addTag"></el-input>
+      <el-input v-model="tempTag" placeholder="回车添加标签，点击删除标签" @change="addTag"></el-input>
       <span v-for="(item,index) in tags" :key="index" @click="deleteTag(index)">{{item}}</span>
     </div>
     <div class="edit_original">
@@ -18,10 +18,10 @@
       <el-radio v-model="original" label="false">转载</el-radio>
     </div>
     <div class="edit_category">
-      <el-radio v-model="category" label="javascript">javascript</el-radio>
+      <el-radio v-model="category" label="JavaScript">JavaScript</el-radio>
       <el-radio v-model="category" label="Vue">Vue</el-radio>
       <el-radio v-model="category" label="Node">Node</el-radio>
-      <el-radio v-model="category" label="Html/Css">Html/Css</el-radio>
+      <el-radio v-model="category" label="Css/Html">Html/Css</el-radio>
       <el-radio v-model="category" label="其他">其他</el-radio>
     </div>
     <div class="edit_desc">
@@ -38,12 +38,19 @@
       @change="onEditorChange($event)"
     ></quill-editor>
     <button v-on:click="postContent">提交</button>
+    <!-- 提交图片 -->
+    <form @submit.prevent="upload" ref="form" enctype="multipart/form-data">
+      <input type="file" name="file" accept="image/jpg" />
+      <input type="submit" value="提交" />
+    </form>
   </div>
 </template>
 
 <script>
 //引入编辑器接口
 import { postArticle, getTest } from "../../service/index";
+
+import axios from "axios";
 
 export default {
   name: "editor",
@@ -86,18 +93,30 @@ export default {
         this.content
       )
         .then(response => {
-          (this.title = ""),
-            (this.author = ""),
-            (this.tags = null),
-            (this.original = ""),
-            (this.category = ""),
-            (this.description = ""),
-            (this.content = ``);
-          console.log(response.data);
+          // (this.title = ""),
+          //   (this.author = ""),
+          //   (this.tags = null),
+          //   (this.original = ""),
+          //   (this.category = ""),
+          //   (this.description = ""),
+          //   (this.content = ``);
+          // console.log(response.message);
+          window.location.reload();
         })
         .catch(error => {
           throw error;
         });
+    },
+    //提交图片
+    upload() {
+      let formData = new FormData(this.$refs.form);
+      axios({
+        method: "post",
+        url: "http://localhost:3000/api/upload",
+        data: formData
+      }).then(response => {
+        console.log(response);
+      });
     },
     //提交标签tags
     addTag() {
@@ -113,17 +132,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 .edit_container {
   width: 800px;
   margin: 0 auto;
+  margin-top: 20px;
   .edit_title,
   .edit_author,
   .edit_original,
@@ -142,6 +154,9 @@ export default {
       cursor: pointer;
       font-size: 13px;
     }
+  }
+  form {
+    margin-top: 30px;
   }
 }
 .edit_container ::v-deep .el-input__inner {

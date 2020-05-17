@@ -1,15 +1,18 @@
 <template>
   <div class="category">
     <div class="category_l">
-      <ul class="category_list" ref="category_outer" @click="changeStyle($event)">
-        <li>全部</li>
-        <li>Css/Html</li>
-        <li>JavaScript</li>
-        <li>Vue</li>
-        <li>Node</li>
-        <li>其他</li>
+      <ul class="category_list" ref="category_outer" @click="getData($event)">
+        <li class="choosen" data-type="all">全部</li>
+        <li v-for="item in category" :key="item" :data-type="item">{{item}}</li>
       </ul>
       <item-article :articles="articles"></item-article>
+      <el-pagination
+        layout="prev, pager, next"
+        background
+        @current-change="handleCurrentChange"
+        :page-size="8"
+        :total="total"
+      ></el-pagination>
     </div>
     <div class="category_r">
       <div class="hot">
@@ -43,29 +46,53 @@ export default {
   data() {
     return {
       id: "1234",
-      articles: []
+      articles: [],
+      total: 0,
+      category: ["Css/Html", "JavaScript", "Vue", "Node", "其他"],
+      type: "all"
     };
   },
   components: {
     ItemArticle
   },
   methods: {
-    changeStyle($event) {
+    getData($event) {
+      //改变分类列表样式
+      let oLi = $event.target;
       let oUl = this.$refs.category_outer;
       let aLi = oUl.children;
       for (let i = 0; i < aLi.length; i++) {
-        aLi[i].style = null;
+        aLi[i].className = "";
       }
-      let oLi = $event.target;
-      oLi.style.fontSize = "16px";
-      oLi.style.color = "#409eff";
-      oLi.style.fontWeight = "700";
+      oLi.className = "choosen";
+      //请求分类数据
+      this.type = oLi.dataset.type;
+      getCategoryData(this.type, 1)
+        .then(response => {
+          this.articles = response.data;
+          this.total = response.total;
+        })
+        .catch(err => {
+          throw err;
+        });
     },
-    reqAllData() {
-      getCategoryData()
+    //分页栏请求数据
+    handleCurrentChange(page) {
+      getCategoryData(this.type, page)
+        .then(response => {
+          this.articles = response.data;
+          // this.total = response.total;
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
+    reqData() {
+      getCategoryData("all", 1)
         .then(response => {
           console.log(response);
           this.articles = response.data;
+          this.total = response.total;
         })
         .catch(err => {
           throw err;
@@ -73,8 +100,9 @@ export default {
     }
   },
   created() {
-    this.reqAllData();
-  }
+    this.reqData();
+  },
+  mounted() {}
 };
 </script>
 
@@ -90,12 +118,22 @@ export default {
     .category_list {
       margin-bottom: 38px;
       // padding-left: 15px;
+      .choosen {
+        font-size: 16px;
+        font-weight: 700;
+        color: #409eff;
+      }
       li {
         display: inline-block;
         padding: 0 19px;
         font-size: 13px;
         cursor: pointer;
       }
+      // li:first-child {
+      //   font-size: 16px;
+      //   font-weight: 700;
+      //   color: #409eff;
+      // }
       li:hover {
         color: #409eff;
       }

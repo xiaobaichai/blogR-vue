@@ -15,7 +15,12 @@
           </div>
         </div>
         <div class="item-r fr">
-          <img src="../../assets/img/home/vue.jpg" alt width="132" height="132" />
+          <img
+            :src="'http://localhost:3000/public/img/'+item.a_id+'.jpg'"
+            alt
+            width="132"
+            height="132"
+          />
         </div>
       </router-link>
     </div>

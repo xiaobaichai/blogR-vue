@@ -16,14 +16,14 @@
             <router-link
               v-for="item in tags"
               tag="a"
-              :to="'/search/'+item"
+              :to="'/searchTag/'+item"
               target="_blank"
               :key="item"
             >{{item}}</router-link>
           </div>
           <div class="search-input">
             <i class="el-icon-search"></i>
-            <input type="text" />
+            <input type="text" v-model="keyword" @keypress="search($event)" />
           </div>
         </div>
         <div class="search-img">
@@ -42,13 +42,13 @@
         <div class="hot">
           <p>热门板块</p>
           <div class="hot-item" v-for="item in hotArticles" :key="item.time">
-            <a>
+            <router-link :to="'/article/'+item.a_id" tag="a" target="_blank">
               <div class="title">{{item.a_title}}</div>
               <div class="info">
                 <span class="time">{{item.a_time | getDate}}</span>
                 <span class="view">{{"浏览" + item.a_views}}</span>
               </div>
-            </a>
+            </router-link>
           </div>
         </div>
         <!-- 热门标签 -->
@@ -58,7 +58,7 @@
             <router-link
               v-for="item in tags"
               tag="a"
-              :to="'/search/'+item"
+              :to="'/searchTag/'+item"
               target="_blank"
               :key="item"
             >{{item}}</router-link>
@@ -67,17 +67,20 @@
         <!-- 最新留言 -->
         <div class="msg">
           <p>最新留言</p>
-          <div class="msg-item">
-            <div class="msg-time">2020/04/29 21:59:35</div>
+          <div class="msg-item" v-for="item in msgs" :key="item.m_time">
+            <div class="msg-time">{{item.m_rTime}}</div>
             <div class="msg-content">
               <div class="user-content">
-                <span>冉迪：</span>申请友链，已添加贵站 站点：http://www.zihanzy.com 名称：唐子涵的个人博客
+                <span class="nickname">{{item.m_nickname+': '}}</span>
+                <span class="msg">{{item.m_content}}</span>
               </div>
               <div class="admin-content">
-                <span>管理员：</span>已添加了，昨天忙及时回复，请重新添加本站友链，欢迎多来窜窜~
+                <span class="admin">管理员：</span>
+                <span class="response">{{item.m_response}}</span>
               </div>
             </div>
           </div>
+          <a class="leave_msg" href="http://localhost:8080/dashboard/message" target="_blank">我要留言</a>
         </div>
         <!-- 博客推荐 -->
         <div class="blog">
@@ -102,7 +105,12 @@
 import ItemArticle from "@/components/content/ItemArticle.vue";
 
 //引入首页接口
-import { getHomeLately, getHomeHot, getHomeTags } from "@/service/index.js";
+import {
+  getHomeLately,
+  getHomeHot,
+  getHomeTags,
+  getMsg
+} from "@/service/index.js";
 
 export default {
   name: "",
@@ -111,6 +119,8 @@ export default {
       articles: [],
       hotArticles: [],
       tags: [],
+      keyword: "",
+      msgs: [],
       carousel: [
         { id: 0, src: require("../../assets/img/carousel1.jpg") },
         { id: 1, src: require("../../assets/img/carousel2.jpg") },
@@ -122,6 +132,7 @@ export default {
     ItemArticle
   },
   methods: {
+    //页面加载请求数据
     reqDate() {
       getHomeLately() //获取首页最新内容lately
         .then(response => {
@@ -145,7 +156,24 @@ export default {
         .catch(err => {
           throw err;
         });
-      console.log("发送请求");
+      getMsg(5) //获取首页留言
+        .then(response => {
+          this.msgs = response.data;
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
+    //搜索
+    search($event) {
+      let keyword = this.keyword;
+      if (event.keyCode == "13") {
+        let routeUrl = this.$router.resolve({
+          path: "/searchKeyword/" + keyword
+          // params: { keyword }
+        });
+        window.open(routeUrl.href, "_blank");
+      }
     }
   },
   created() {
@@ -156,6 +184,8 @@ export default {
 
 <style lang="scss" scoped>
 .home-content {
+  padding-bottom: 60px;
+  min-height: 100%;
   width: 1200px;
   margin: 0 auto;
   //轮播图板块
@@ -332,19 +362,53 @@ export default {
             .user-content {
               font-size: 14px;
               margin-bottom: 12px;
-              span {
+              .nickname {
                 font-weight: 600;
                 color: rgb(36, 139, 207);
+              }
+              .msg {
+                word-break: normal;
+                width: auto;
+                // display: block;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow: hidden;
               }
             }
             .admin-content {
               font-size: 14px;
-              span {
+              .admin {
                 font-weight: 600;
                 color: rgb(36, 139, 207);
               }
+              .response {
+                word-break: normal;
+                width: auto;
+                // display: block;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow: hidden;
+              }
             }
           }
+        }
+        .leave_msg {
+          display: block;
+          box-sizing: border-box;
+          padding: 12px 120px;
+          margin: 0 auto;
+          margin-bottom: 30px;
+          width: 340px;
+          border: 1px solid #00a8ff;
+          border-radius: 8px;
+          font-size: 16px;
+          text-align: center;
+          color: #00a8ff;
+          cursor: pointer;
+        }
+        .leave_msg:hover {
+          color: #ffffff;
+          background-color: #00a8ff;
         }
       }
       // 友链推荐

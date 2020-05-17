@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="profile">
     <h1>user</h1>
   </div>
 </template>
@@ -11,4 +11,6 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+// .profile {
+// }
 </style>
