@@ -156,7 +156,7 @@ export default {
         .catch(err => {
           throw err;
         });
-      getMsg(5) //获取首页留言
+      getMsg(5, 1) //获取首页留言（5条，第1页）
         .then(response => {
           this.msgs = response.data;
         })

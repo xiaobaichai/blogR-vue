@@ -10,7 +10,10 @@
           <router-link to="/dashboard/category" tag="li" active-class="active">技术分类</router-link>
           <router-link to="/dashboard/message" tag="li" active-class="active">留言板</router-link>
           <router-link to="/dashboard/recommend" tag="li" active-class="active">资源推荐</router-link>
-          <router-link to="/dashboard/user" tag="li" active-class="active">登录/注册</router-link>
+          <router-link to="/dashboard/user" tag="li" active-class="active" v-if="token">
+            <img class="avatar" :src="user_info.avatarSrc" alt width="50" height="50" />
+          </router-link>
+          <router-link to="/dashboard/user" tag="li" active-class="active" v-else>登录/注册</router-link>
         </ul>
       </div>
     </div>
@@ -18,8 +21,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  name: "bNav"
+  name: "bNav",
+  computed: {
+    ...mapState(["token", "user_info"])
+  }
 };
 </script>
 
@@ -65,6 +73,11 @@ export default {
           font-size: 16px;
           font-weight: 700;
           cursor: pointer;
+          .avatar {
+            display: inline-block;
+            margin-top: 15px;
+            border-radius: 50%;
+          }
         }
         li:hover {
           color: rgb(23, 139, 216);

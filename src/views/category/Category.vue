@@ -138,6 +138,10 @@ export default {
         color: #409eff;
       }
     }
+    .el-pagination {
+      text-align: center;
+      margin-bottom: 20px;
+    }
   }
   .category_r {
     width: 380px;

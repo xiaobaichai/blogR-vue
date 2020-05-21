@@ -1,5 +1,8 @@
 import axios from "axios";
 
+//设置每次axios发起请求都带上cookie
+axios.defaults.withCredentials = true;
+
 export default function ajax(url = "", params = {}, type = "GET") {
   let promise;
 

@@ -30,6 +30,12 @@
           </div>
         </div>
       </div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        @current-change="getPageMsg"
+      ></el-pagination>
     </div>
     <div class="message_r">
       <div class="message_border">
@@ -65,14 +71,36 @@ export default {
       nickname: "",
       email: "",
       content: "",
-      msgs: []
+      msgs: [],
+      count: 6, //每次请求留言条数
+      total: 0
     };
   },
   methods: {
+    //提交留言
     submit() {
+      //表单校验
+      if (this.nickname == "") {
+        this.$message("请输入昵称");
+        return;
+      }
+      if (
+        !/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(
+          this.email
+        )
+      ) {
+        this.$message("请输入正确邮箱");
+        return;
+      }
+      if (this.content == "") {
+        this.$message("请输入留言内容");
+        return;
+      }
       leaveMessage(this.nickname, this.email, this.content)
         .then(response => {
-          console.log(response);
+          if (response.code == 1) {
+            this.$message(response.message);
+          }
           //清空留言
           this.nickname = "";
           this.email = "";
@@ -82,11 +110,27 @@ export default {
           throw err;
         });
     },
+    //请求留言数据
     reqData() {
-      getMsg(6).then(response => {
-        console.log(response);
-        this.msgs = response.data;
-      });
+      getMsg(this.count, 1)
+        .then(response => {
+          console.log(response);
+          this.msgs = response.data;
+          this.total = response.total;
+        })
+        .catch(err => {
+          throw err;
+        });
+    },
+    //请求分页留言数据
+    getPageMsg(page) {
+      getMsg(this.count, page)
+        .then(response => {
+          this.msgs = response.data;
+        })
+        .catch(err => {
+          throw err;
+        });
     }
   },
   created() {
@@ -173,6 +217,10 @@ export default {
           }
         }
       }
+    }
+    .el-pagination {
+      text-align: center;
+      margin-bottom: 20px;
     }
   }
   .message_r {

@@ -83,6 +83,20 @@ export default {
     onEditorChange() {}, // 内容改变事件
     //提交博文信息
     postContent(event) {
+      //表单验证
+      let flag =
+        this.title == "" ||
+        this.author == "" ||
+        this.tags.length == 0 ||
+        this.original == "" ||
+        this.category == "" ||
+        this.description == "" ||
+        this.content == "";
+
+      if (flag) {
+        this.$message("请填写完整");
+        return;
+      }
       postArticle(
         this.title,
         this.author,
@@ -93,14 +107,6 @@ export default {
         this.content
       )
         .then(response => {
-          // (this.title = ""),
-          //   (this.author = ""),
-          //   (this.tags = null),
-          //   (this.original = ""),
-          //   (this.category = ""),
-          //   (this.description = ""),
-          //   (this.content = ``);
-          // console.log(response.message);
           window.location.reload();
         })
         .catch(error => {
