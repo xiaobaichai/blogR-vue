@@ -1,5 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+//引入nprogress
+import Nprogress from "nprogress";
+import "nprogress/nprogress.css";
 
 Vue.use(VueRouter);
 
@@ -14,6 +17,7 @@ const ArtiPage = () => import("@/views/article/ArtiPage.vue");
 const SearchTag = () => import("@/views/searchTag/SearchTag.vue");
 const SearchKeyword = () => import("@/views/searchKeyword/SearchKeyword.vue");
 const ResMsg = () => import("@/views/resMsg/ResMsg.vue");
+const UploadCarousel = () => import("@/views/uploadCarousel/UploadCarousel.vue");
 
 const Editor = () => import("@/components/commen/Editor");
 
@@ -63,12 +67,28 @@ const routes = [
     name: "resMsg",
     component: ResMsg,
   },
+  //轮播图编辑页面
+  {
+    path: "/uploadCarousel",
+    name: "uploadCarousel",
+    component: UploadCarousel,
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+//配置Nprogress
+router.beforeEach((to, from, next) => {
+  Nprogress.start();
+  next();
+});
+
+router.afterEach(() => {
+  Nprogress.done();
 });
 
 export default router;

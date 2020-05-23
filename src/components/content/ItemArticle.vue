@@ -15,12 +15,7 @@
           </div>
         </div>
         <div class="item-r fr">
-          <img
-            :src="'http://localhost:3000/public/img/'+item.a_id+'.jpg'"
-            alt
-            width="132"
-            height="132"
-          />
+          <img :src="item.a_imgSrc" alt width="132" height="132" />
         </div>
       </router-link>
     </div>
@@ -45,7 +40,7 @@ export default {
   margin-bottom: 15px;
   box-sizing: border-box;
   width: 790px;
-  padding: 0 20px 29px 10px;
+  padding: 0 30px 29px 10px;
   border-bottom: 1px solid #eeeeee;
   //item左侧简介
   .item-l {
@@ -96,6 +91,7 @@ export default {
     height: 132px;
     img {
       margin-top: 17px;
+      border-radius: 5px;
     }
   }
 }

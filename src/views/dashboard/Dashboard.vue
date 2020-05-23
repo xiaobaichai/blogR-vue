@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="dashboard">
     <b-nav></b-nav>
-    <router-view></router-view>
+    <router-view class="container"></router-view>
     <bottom></bottom>
   </div>
 </template>
@@ -27,4 +27,14 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.dashboard {
+  height: 100%;
+  .container {
+    box-sizing: border-box;
+    min-height: 100%;
+    padding-top: 110px;
+    padding-bottom: 120px;
+  }
+}
+</style>

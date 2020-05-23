@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <b-nav></b-nav>
     <div class="search">
       <div class="search_result">
@@ -26,6 +26,7 @@ import BNav from "@/components/content/BNav.vue";
 import Bottom from "@/components/content/Bottom.vue";
 import ItemArticle from "@/components/content/ItemArticle.vue";
 
+import { mapActions } from "vuex";
 //引入接口
 import { getSearchKeyword } from "@/service/index.js";
 
@@ -42,6 +43,7 @@ export default {
     ItemArticle
   },
   methods: {
+    ...mapActions(["requireTokenAsync"]),
     reqDate() {
       getSearchKeyword(this.$route.params.keyword)
         .then(response => {
@@ -55,49 +57,59 @@ export default {
   },
   created() {
     this.reqDate();
+  },
+  mounted() {
+    this.requireTokenAsync();
   }
 };
 </script>
 
 <style lang='scss' scoped>
-.search {
-  margin-top: 100px;
-  .search_result {
-    margin-bottom: 26px;
-    width: 100%;
-    height: 90px;
-    background-color: rgb(223, 223, 223);
-    .result_center {
-      box-sizing: border-box;
+.container {
+  height: 100%;
+  .search {
+    box-sizing: border-box;
+    padding-top: 110px;
+    padding-bottom: 120px;
+    min-height: 100%;
+    .search_result {
+      margin-bottom: 26px;
+      width: 100%;
+      height: 90px;
+      background-color: rgb(223, 223, 223);
+      .result_center {
+        box-sizing: border-box;
+        width: 1200px;
+        margin: 0 auto;
+        padding: 18px 0 0 2px;
+        .tag {
+          margin-bottom: 14px;
+          font-size: 18px;
+          font-weight: 700;
+        }
+        .result {
+          font-size: 14px;
+        }
+      }
+    }
+    .search_content {
       width: 1200px;
       margin: 0 auto;
-      padding: 18px 0 0 2px;
-      .tag {
-        margin-bottom: 14px;
-        font-size: 18px;
-        font-weight: 700;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      .content_l {
+        width: 790px;
+        p {
+          font-size: 19px;
+          font-weight: 700;
+          margin-bottom: 24px;
+        }
       }
-      .result {
-        font-size: 14px;
+      .content_r {
+        width: 380px;
+        border-left: 1px solid #ebe9e9;
       }
-    }
-  }
-  .search_content {
-    width: 1200px;
-    margin: 0 auto;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: space-between;
-    .content_l {
-      width: 790px;
-      p {
-        font-size: 19px;
-        font-weight: 700;
-        margin-bottom: 24px;
-      }
-    }
-    .content_r {
-      width: 380px;
     }
   }
 }

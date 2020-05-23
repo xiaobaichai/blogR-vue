@@ -17,25 +17,20 @@
       <div class="new_msg">
         <p>最新留言</p>
         <div class="msg-item" v-for="item in msgs" :key="item.m_time">
-          <div class="msg-time">{{item.m_rTime}}</div>
+          <div class="msg-time">{{ item.m_rTime }}</div>
           <div class="msg-content">
             <div class="user-content">
-              <span class="nickname">{{item.m_nickname+': '}}</span>
-              <span class="msg">{{item.m_content}}</span>
+              <span class="nickname">{{ item.m_nickname + ": " }}</span>
+              <span class="msg">{{ item.m_content }}</span>
             </div>
             <div class="admin-content">
               <span class="admin">管理员：</span>
-              <span class="admin-content">{{item.m_response}}</span>
+              <span class="admin-content">{{ item.m_response }}</span>
             </div>
           </div>
         </div>
       </div>
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        @current-change="getPageMsg"
-      ></el-pagination>
+      <el-pagination background layout="prev, pager, next" :hide-on-single-page="true" :total="total" @current-change="getPageMsg"></el-pagination>
     </div>
     <div class="message_r">
       <div class="message_border">
@@ -53,7 +48,8 @@
           </p>
         </div>
         <div class="description_outer">
-          <p class="description">这是一个用于练习和记录的个人博客,我未与其本事也，受人之事，以重相推。此人用之数也。</p>
+          <p class="description">欢迎来到我的博客，这是一个用于练习和记录前端知识的个人博客,目前还有部分内容尚待完善。。。</p>
+          <p class="description"></p>
         </div>
       </div>
     </div>
@@ -73,7 +69,7 @@ export default {
       content: "",
       msgs: [],
       count: 6, //每次请求留言条数
-      total: 0
+      total: 0,
     };
   },
   methods: {
@@ -84,11 +80,7 @@ export default {
         this.$message("请输入昵称");
         return;
       }
-      if (
-        !/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(
-          this.email
-        )
-      ) {
+      if (!/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(this.email)) {
         this.$message("请输入正确邮箱");
         return;
       }
@@ -97,7 +89,7 @@ export default {
         return;
       }
       leaveMessage(this.nickname, this.email, this.content)
-        .then(response => {
+        .then((response) => {
           if (response.code == 1) {
             this.$message(response.message);
           }
@@ -105,44 +97,44 @@ export default {
           this.nickname = "";
           this.email = "";
           this.content = "";
+          window.location.reload();
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
     },
     //请求留言数据
     reqData() {
       getMsg(this.count, 1)
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.msgs = response.data;
           this.total = response.total;
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
     },
     //请求分页留言数据
     getPageMsg(page) {
       getMsg(this.count, page)
-        .then(response => {
+        .then((response) => {
           this.msgs = response.data;
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
-    }
+    },
   },
   created() {
     this.reqData();
-  }
+  },
 };
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .message {
   margin: 0 auto;
-  margin-top: 110px;
   width: 1200px;
   display: flex;
   justify-content: space-around;
@@ -225,8 +217,11 @@ export default {
   }
   .message_r {
     width: 330px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 5px 8px 0 rgba(7, 17, 27, 0.1);
     .message_border {
-      border: 1px solid #eeeeee;
+      // border: 1px solid #eeeeee;
       padding: 23px 29px;
       border-radius: 4px;
       .about {

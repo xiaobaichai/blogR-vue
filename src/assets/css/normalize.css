@@ -78,7 +78,13 @@ body {
   line-height: 1.5;
   font-family: "Microsoft Yahei", "simsun", "arial", "tahoma";
   color: #333;
+  background-color: #f6f6f6;
 }
+body,
+html {
+  height: 100%;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;

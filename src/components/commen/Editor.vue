@@ -40,7 +40,11 @@
     <button v-on:click="postContent">提交</button>
     <!-- 提交图片 -->
     <form @submit.prevent="upload" ref="form" enctype="multipart/form-data">
-      <input type="file" name="file" accept="image/jpg" />
+      <input type="text" name="link" placeholder="文章id" />
+      <input type="file" name="file" />
+      <br />
+      <span>图片尺寸132* 132</span>
+      <br />
       <input type="submit" value="提交" />
     </form>
   </div>
@@ -121,7 +125,7 @@ export default {
         url: "http://localhost:3000/api/upload",
         data: formData
       }).then(response => {
-        console.log(response);
+        window.location.reload();
       });
     },
     //提交标签tags

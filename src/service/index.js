@@ -10,6 +10,7 @@ export const postArticle = (title, author, tags, original, type, description, co
 export const getHomeLately = () => ajax(BASE_URL + "/api/home/lately");
 export const getHomeHot = () => ajax(BASE_URL + "/api/home/hot");
 export const getHomeTags = () => ajax(BASE_URL + "/api/home/tags");
+export const getCarousel = () => ajax(BASE_URL + "/api/getCarousel");
 
 //技术分类接口=============================================================
 export const getCategoryData = (type, page) => ajax(BASE_URL + "/api/category", { type, page });
@@ -24,6 +25,9 @@ export const getRecommendData = () => ajax(BASE_URL + "/api/recommend");
 
 //登录接口===============================================================
 export const login = (name, pwd) => ajax(BASE_URL + "/api/login", { name, pwd }, "POST");
+
+//退出登录接口============================================================
+export const logout = () => ajax(BASE_URL + "/api/logout");
 
 //进入站点时请求token
 export const requireToken = () => ajax(BASE_URL + "/api/requireToken");

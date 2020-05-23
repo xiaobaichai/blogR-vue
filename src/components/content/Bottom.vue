@@ -24,6 +24,9 @@ export default {
 
 <style lang='scss' scoped>
 .footer {
+  box-sizing: border-box;
+  margin-top: -100px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;

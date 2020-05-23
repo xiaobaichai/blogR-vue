@@ -143,7 +143,6 @@ export default {
 
 <style lang='scss' scoped>
 .recommend {
-  margin-top: 110px;
   .category_outer {
     width: 100%;
     height: 60px;
@@ -176,6 +175,8 @@ export default {
       height: 180px;
       border: 1px solid #eeeeee;
       cursor: pointer;
+      background-color: #fff;
+      border-radius: 5px;
       .item_top {
         box-sizing: border-box;
         height: 110px;

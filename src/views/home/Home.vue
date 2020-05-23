@@ -5,7 +5,9 @@
       <div class="carousel-l">
         <el-carousel height="330px">
           <el-carousel-item v-for="item in carousel" :key="item.id">
-            <img :src="item.src" alt width="790" height="330" />
+            <router-link :to="'/article/' + item.c_link" target="_blank">
+              <img :src="item.c_imgSrc" alt width="790" height="330" />
+            </router-link>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -13,13 +15,7 @@
         <div class="search">
           <div class="search-tag">
             <!-- <span>热门标签</span> -->
-            <router-link
-              v-for="item in tags"
-              tag="a"
-              :to="'/searchTag/'+item"
-              target="_blank"
-              :key="item"
-            >{{item}}</router-link>
+            <router-link v-for="item in tags" tag="a" :to="'/searchTag/' + item" target="_blank" :key="item">{{ item }}</router-link>
           </div>
           <div class="search-input">
             <i class="el-icon-search"></i>
@@ -27,7 +23,7 @@
           </div>
         </div>
         <div class="search-img">
-          <img src="../../assets/img/home/search.jpg" alt />
+          <img src="../../assets/img/home/search.webp" alt />
         </div>
       </div>
     </div>
@@ -40,51 +36,45 @@
       <div class="content-r">
         <!-- 热门板块 -->
         <div class="hot">
-          <p>热门板块</p>
+          <p>#热门板块</p>
           <div class="hot-item" v-for="item in hotArticles" :key="item.time">
-            <router-link :to="'/article/'+item.a_id" tag="a" target="_blank">
-              <div class="title">{{item.a_title}}</div>
+            <router-link :to="'/article/' + item.a_id" tag="a" target="_blank">
+              <div class="title">{{ item.a_title }}</div>
               <div class="info">
-                <span class="time">{{item.a_time | getDate}}</span>
-                <span class="view">{{"浏览" + item.a_views}}</span>
+                <span class="time">{{ item.a_time | getDate }}</span>
+                <span class="view">{{ "浏览" + item.a_views }}</span>
               </div>
             </router-link>
           </div>
         </div>
         <!-- 热门标签 -->
         <div class="tags">
-          <p>热门标签</p>
+          <p>#热门标签</p>
           <div class="tag_item">
-            <router-link
-              v-for="item in tags"
-              tag="a"
-              :to="'/searchTag/'+item"
-              target="_blank"
-              :key="item"
-            >{{item}}</router-link>
+            <router-link v-for="item in tags" tag="a" :to="'/searchTag/' + item" target="_blank" :key="item">{{ item }}</router-link>
           </div>
         </div>
         <!-- 最新留言 -->
         <div class="msg">
-          <p>最新留言</p>
+          <p>#最新留言</p>
           <div class="msg-item" v-for="item in msgs" :key="item.m_time">
-            <div class="msg-time">{{item.m_rTime}}</div>
+            <div class="msg-time">{{ item.m_rTime }}</div>
             <div class="msg-content">
               <div class="user-content">
-                <span class="nickname">{{item.m_nickname+': '}}</span>
-                <span class="msg">{{item.m_content}}</span>
+                <span class="nickname">{{ item.m_nickname + ": " }}</span>
+                <span class="msg">{{ item.m_content }}</span>
               </div>
               <div class="admin-content">
                 <span class="admin">管理员：</span>
-                <span class="response">{{item.m_response}}</span>
+                <span class="response">{{ item.m_response }}</span>
               </div>
             </div>
           </div>
           <a class="leave_msg" href="http://localhost:8080/dashboard/message" target="_blank">我要留言</a>
         </div>
         <!-- 博客推荐 -->
-        <div class="blog">
-          <p>友链推荐</p>
+        <!-- <div class="blog">
+          <p>#友链推荐</p>
           <ul>
             <li>blog</li>
             <li>博客</li>
@@ -94,7 +84,7 @@
             <li>源码分博客析</li>
             <li>博客分</li>
           </ul>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -105,12 +95,7 @@
 import ItemArticle from "@/components/content/ItemArticle.vue";
 
 //引入首页接口
-import {
-  getHomeLately,
-  getHomeHot,
-  getHomeTags,
-  getMsg
-} from "@/service/index.js";
+import { getHomeLately, getHomeHot, getHomeTags, getMsg, getCarousel } from "@/service/index.js";
 
 export default {
   name: "",
@@ -121,90 +106,91 @@ export default {
       tags: [],
       keyword: "",
       msgs: [],
-      carousel: [
-        { id: 0, src: require("../../assets/img/carousel1.jpg") },
-        { id: 1, src: require("../../assets/img/carousel2.jpg") },
-        { id: 2, src: require("../../assets/img/carousel3.jpg") }
-      ]
+      carousel: [],
     };
   },
   components: {
-    ItemArticle
+    ItemArticle,
   },
   methods: {
     //页面加载请求数据
     reqDate() {
       getHomeLately() //获取首页最新内容lately
-        .then(response => {
+        .then((response) => {
           this.articles = response.data;
           console.log(response);
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
       getHomeHot() //获取首页热门内容hot
-        .then(response => {
+        .then((response) => {
           this.hotArticles = response.data;
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
       getHomeTags() //获取首页标签tags
-        .then(response => {
+        .then((response) => {
           this.tags = response.data;
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
       getMsg(5, 1) //获取首页留言（5条，第1页）
-        .then(response => {
+        .then((response) => {
           this.msgs = response.data;
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
+      getCarousel().then((response) => {
+        this.carousel = response.data;
+      }); //获取首页轮播图
     },
     //搜索
     search($event) {
       let keyword = this.keyword;
       if (event.keyCode == "13") {
         let routeUrl = this.$router.resolve({
-          path: "/searchKeyword/" + keyword
+          path: "/searchKeyword/" + keyword,
           // params: { keyword }
         });
         window.open(routeUrl.href, "_blank");
       }
-    }
+    },
   },
   created() {
     this.reqDate();
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .home-content {
-  padding-bottom: 60px;
-  min-height: 100%;
   width: 1200px;
   margin: 0 auto;
   //轮播图板块
   .carousel {
-    margin-top: 110px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     display: flex;
     .carousel-l {
       width: 790px;
       height: 330px;
       margin-right: 10px;
-      border-radius: 4px;
+      border-radius: 5px;
       box-shadow: 0 5px 8px 0 rgba(7, 17, 27, 0.3);
+      background-color: #fff;
+      img {
+        border-radius: 5px;
+      }
     }
     .carousel-r {
       width: 400px;
       height: 330px;
-      border-radius: 4px;
+      border-radius: 5px;
       box-shadow: 0 5px 8px 0 rgba(7, 17, 27, 0.3);
+      background-color: #fff;
       .search {
         box-sizing: border-box;
         width: 100%;
@@ -246,6 +232,8 @@ export default {
             background: #fafafa;
             outline: none;
             border: none;
+            font-size: 14px;
+            color: rgb(146, 145, 145);
           }
         }
       }
@@ -263,8 +251,15 @@ export default {
     margin: 0 auto;
     display: flex;
     .content-l {
+      box-sizing: border-box;
+      padding: 10px 0 0 10px;
       width: 790px;
+      height: 100%;
       margin-right: 10px;
+      background-color: #fff;
+      border-radius: 5px;
+      overflow: hidden;
+
       p {
         font-size: 19px;
         font-weight: 700;
@@ -272,8 +267,12 @@ export default {
       }
     }
     .content-r {
+      box-sizing: border-box;
       width: 400px;
-      padding-left: 20px;
+      height: 100%;
+      padding: 10px 10px 0 10px;
+      background-color: #fff;
+      border-radius: 5px;
       //热门板块
       .hot {
         margin-bottom: 40px;

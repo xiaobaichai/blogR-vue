@@ -9,13 +9,14 @@
       <el-pagination
         layout="prev, pager, next"
         background
+        :hide-on-single-page="true"
         @current-change="handleCurrentChange"
         :page-size="8"
         :total="total"
       ></el-pagination>
     </div>
     <div class="category_r">
-      <div class="hot">
+      <!-- <div class="hot">
         <p>热门板块</p>
         <router-link :to="'/article/'+id" tag="a" target="_blank" class="hot-item">
           <div class="hot-l">
@@ -31,7 +32,7 @@
             </a>
           </div>
         </router-link>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -110,11 +111,15 @@ export default {
 .category {
   width: 1200px;
   margin: 0 auto;
-  margin-top: 110px;
   display: flex;
   justify-content: space-between;
   .category_l {
     width: 800px;
+    height: 100%;
+    // background-color: #fff;
+    padding: 10px 0 0 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
     .category_list {
       margin-bottom: 38px;
       // padding-left: 15px;
@@ -145,6 +150,12 @@ export default {
   }
   .category_r {
     width: 380px;
+    // height: 100%;
+    // background-color: #fff;
+    border-left: 1px solid #dddbdb;
+    padding: 10px 0 0 10px;
+    box-sizing: border-box;
+    // border-radius: 5px;
     .hot {
       margin-bottom: 40px;
       p {
